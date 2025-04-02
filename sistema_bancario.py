@@ -4,6 +4,9 @@
 #print("Depositar")
 #print("Sacar")
 
+#Importação de biblioteca
+from datetime import datetime
+
 saldo = 0
 limite = 500
 numero_saques = 0
@@ -12,7 +15,7 @@ usuarios =[]#criei uma lista vazia , pois serão adicionados valores posteriorme
 contas = []
 agencia='0001'
 
-
+#Menu com as opções que o usuário vai escolher
 def menu():
     print('''
         **********Menu**********
@@ -36,24 +39,6 @@ def deposito(valor,saldo):
         print('Valor do deposito Ínválido.Verifique a quantia digitada.')
     
     return saldo
-
-def saque(saque,saldo):
-   global  numero_saques,limites,limites_saques
-    #De acordo com a documentação Python , váriaveis globais não ficam presas ao limite do escopo da função.
-   if numero_saques >= limites_saques:
-    print('Você atingiu o limite de saques de sua conta.Tente novamente no proximo dia útil')
-   else:
-        if saque <= 0:
-            print('Saque Inválido.Verifique o valor e tente novamente.')
-        elif saque > limite :
-            print('Valor limite excedido.Verifique o valor e tente novamente.')
-        elif saque > saldo :
-            print('Saldo insuficiênte.Verifique o valor e tente novamente.')
-        else:
-            saldo -= saque
-            numero_saques += 1
-            
-        return saldo        
 
 def saque(saque,saldo):
 
@@ -82,18 +67,28 @@ def extrato (saldo):
     print(f'{horaatual} \nSaldo disponível:{saldo}' )
     print('\n=============Extrato=============')
 
-def sari():
-    print('Encerrando o Sistema')
-def novo_usuario
-    cpf = int(input('Digite seu cpf(Somente números);'))
-    usuario = filtrar_usuarios(cpf,usuarios)
+def sair():
+    print('***************Encerrando o Sistema***************')
 
-    if usuarios:
-    print('Usuário já cadastrado na base de dados')
-    return
-    nome = str(input('Escreva seu nome completo:'))
-    data_nascimento = input('Informe a data de nascimento (dd -- mm -- aa):')
-    endereço = input('Informe seu endereço (Rua, Número, Cep, bairro e cidade)')
+def novo_usuario(usuario):
+    cpf = int(input('Digite seu cpf (Somente números);'))
+    usuario = filtrar_usuario(cpf,usuarios)
 
-usuarios.append(f'nome:{nome}, data de nascimento:{data_nascimento} e endereço:{endereço}')
-print('Cadastro realizado com sucesso')
+    if usuario:
+        print('Usuário já cadastrado na base de dados!')
+        return
+
+    nome = str('Escreva seu nome completo : ')
+    data_nascimento = input('Informe a data de nascimento (dd--mm--aa) :')
+    endereço = input('Informe seu endereço (Rua , numero,cep,bairro e cidade)')
+    #o append adiciona usuário ao meu banco
+    usuarios.append(f'nome:{nome},data de nascimento:{data_nascimento},endereço:{endereço}')
+    print('Cadastro realizado com sucesso!')
+#Função filtrar usuários
+def filtrar_usuario (cpf,usuarios):
+    #Filtra o usuário com base em um CPF
+    #A Função usa uma coompreensão de lista para verificar aquele que corresponde
+    #ao cpf fornecido
+    #e retorna o primeiro usuário que corresponde com o cpf filtrado.Caso não encontre nada ele retorna NONE(nada).
+    usuarios_filtrados = [usuario for usuario in usuarios if usuarios['cpf'] ==cpf]
+    return usuarios_filtrados[0] if usuarios_filtrados else None
